@@ -5,12 +5,13 @@ import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.routes.js';
+import usersRoutes from './routes/users.routes.js';
 import securityMiddleware from '#middleware/security.middleware.js' ;
 
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -33,5 +34,6 @@ app.get('/api', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes); //api/auth/sign-in
+app.use('/api/users', usersRoutes);
 
 export default app;

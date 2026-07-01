@@ -1,7 +1,7 @@
 import logger from "#config/logger.js";
-import { signupSchema } from "#validations/auth.validation.js";
+import { signupSchema, signInSchema } from "#validations/auth.validation.js";
 import { formatValidationErrors } from "#utils/format.js";
-import { createUser } from "#services/auth.service.js";
+import { createUser, authenticateUser } from "#services/auth.service.js";
 import { jwttoken } from "#utils/jwt.js";
 import { cookies } from "#utils/cookies.js";
 
@@ -12,7 +12,7 @@ export const signup = async (req, res, next) => {
         if (!validationResult.success) {
             return res.status(400).json({
                 error: 'Validation failed',
-                details: formatValidationErrors(validationResult.error)
+                details: formatValidationErrors(validationResult.error),
             });
         }
 
@@ -27,17 +27,54 @@ export const signup = async (req, res, next) => {
         logger.info(`User registered successfully: ${email}`);
         res.status(201).json({
             message: 'User registered',
-            user: {
-                id: user.id, name: user.name, email: user.email, role: user.role
-            }
+            user: { id: user.id, name: user.name, email: user.email, role: user.role },
         });
     } catch (e) {
         logger.error('Signup error: ', e);
 
-        if (e.message == 'User with this email already exists') {
+        if (e.message === 'User already exists') {
             return res.status(409).json({ error: 'Email already exists' });
         }
 
         next(e);
     }
+};
+
+export const signIn = async (req, res, next) => {
+    try {
+        const validationResult = signInSchema.safeParse(req.body);
+
+        if (!validationResult.success) {
+            return res.status(400).json({
+                error: 'Validation failed',
+                details: formatValidationErrors(validationResult.error),
+            });
+        }
+
+        const { email, password } = validationResult.data;
+        const user = await authenticateUser({ email, password });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+
+        const token = jwttoken.sign({ id: user.id, email: user.email, role: user.role });
+        cookies.set(res, 'token', token, { sameSite: 'lax' });
+
+        logger.info(`User signed in successfully: ${email}`);
+        res.json({
+            message: 'Signed in successfully',
+            token,
+            user: { id: user.id, name: user.name, email: user.email, role: user.role },
+        });
+    } catch (e) {
+        logger.error('Sign in error: ', e);
+        next(e);
+    }
+};
+
+export const signOut = async (req, res) => {
+    cookies.clear(res, 'token');
+    logger.info('User signed out successfully');
+    res.json({ message: 'Signed out successfully' });
 };
