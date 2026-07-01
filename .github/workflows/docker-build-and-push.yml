@@ -1,0 +1,41 @@
+name: Docker Build and Push
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main, staging]
+
+jobs:
+  docker-build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v5
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/acquisitions:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/acquisitions:${{ github.ref_name }}
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/acquisitions:latest
+          cache-to: type=registry,mode=max,ref=${{ secrets.DOCKERHUB_USERNAME }}/acquisitions:latest
+
+      - name: Docker image summary
+        run: |
+          echo "Docker image pushed to ${{ secrets.DOCKERHUB_USERNAME }}/acquisitions:latest" > $GITHUB_STEP_SUMMARY

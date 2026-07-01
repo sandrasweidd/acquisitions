@@ -99,3 +99,8 @@
 {"level":"info","message":"::1 - - [25/Jun/2026:07:51:05 +0000] \"GET /health HTTP/1.1\" 200 74 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-06-25T07:51:05.545Z"}
 {"ip":"::1","level":"warn","message":"Rate Limit exceeded","path":"/health","service":"acquisitions-api","timestamp":"2026-06-25T07:51:06.388Z","userAgent":"HTTPie"}
 {"level":"info","message":"::1 - - [25/Jun/2026:07:51:06 +0000] \"GET /health HTTP/1.1\" 403 49 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-06-25T07:51:06.390Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [01/Jul/2026:12:25:21 +0000] \"GET /api HTTP/1.1\" 200 42 \"-\" \"-\"","service":"acquisitions-api","timestamp":"2026-07-01T12:25:21.962Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [01/Jul/2026:12:25:22 +0000] \"GET /nonexistent HTTP/1.1\" 404 21 \"-\" \"-\"","service":"acquisitions-api","timestamp":"2026-07-01T12:25:22.020Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [01/Jul/2026:12:26:56 +0000] \"GET /health HTTP/1.1\" 200 73 \"-\" \"-\"","service":"acquisitions-api","timestamp":"2026-07-01T12:26:56.990Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [01/Jul/2026:12:26:57 +0000] \"GET /api HTTP/1.1\" 200 42 \"-\" \"-\"","service":"acquisitions-api","timestamp":"2026-07-01T12:26:57.070Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [01/Jul/2026:12:26:57 +0000] \"GET /nonexistent HTTP/1.1\" 404 21 \"-\" \"-\"","service":"acquisitions-api","timestamp":"2026-07-01T12:26:57.116Z"}
