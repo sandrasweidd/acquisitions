@@ -1,6 +1,11 @@
-import express from "express";
-import { getAllUsers, getUserById, updateUser, deleteUser } from "#controllers/users.controller.js";
-import { requireAuth, requireRole } from "#middleware/auth.middleware.js";
+import express from 'express';
+import {
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+} from '#controllers/users.controller.js';
+import { requireAuth, requireRole } from '#middleware/auth.middleware.js';
 
 const router = express.Router();
 

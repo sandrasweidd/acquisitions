@@ -21,7 +21,5 @@ services:
         reservations:
           memory: 265M
           cups: '0.25'
-    
-    
-    
-    command: ["node", "src/index.js"]
+
+    command: ['node', 'src/index.js']

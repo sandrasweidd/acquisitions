@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main, staging]
 
+env:
+  REGISTERY: docker.io
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/kubernetes-demo-api
+
 jobs:
   docker-build-and-push:
     name: Build and Push Docker Image
