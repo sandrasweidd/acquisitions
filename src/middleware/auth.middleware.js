@@ -55,9 +55,8 @@ export const requireAuth = (req, res, next) => {
   }
 };
 
-export const requireRole =
-  (roles = []) =>
-  (req, res, next) => {
+export const requireRole = (roles = []) => {
+  return (req, res, next) => {
     if (!req.user) {
       logger.warn('Authorization required: no authenticated user');
       return res.status(401).json({ error: 'Authentication required' });
@@ -70,3 +69,4 @@ export const requireRole =
 
     next();
   };
+};
